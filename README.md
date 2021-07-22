@@ -20,7 +20,7 @@ conda install -c conda-forge ipywidgets
 ipywidgets might not work with jupyterlab. But they should work with jupyter notebook  
 
 Then clone the repository:  
-git clone https://github.com/cassberk/RigettiHW  
+git clone https://github.com/cassberk/CassRigettiChallenge
 
 type:  
 jupyter notebook  
