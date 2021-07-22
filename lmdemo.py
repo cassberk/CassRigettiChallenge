@@ -56,8 +56,6 @@ class OptimizationAlgorithms:
         self.aa,self.bb = np.meshgrid(self.x, self.x)
         aaa = np.repeat(self.aa[:,:,np.newaxis],len(self.x),axis=2)
         bbb = np.repeat(self.bb[:,:,np.newaxis],len(self.x),axis=2)
-
-
         par_space = self.f(self.x,[aaa,bbb])
         yyy = self.f(self.x,self.beta_true)*np.ones_like(par_space)
 
@@ -95,20 +93,16 @@ class OptimizationAlgorithms:
                 break
                 
             Jac = self.J(beta[i])
-            h = np.dot(Jac.T,(self.y_true - self.f(self.x,beta[i]))[:,np.newaxis])
-            
+            h = np.dot(Jac.T,(self.y_true - self.f(self.x,beta[i]))[:,np.newaxis])      
             h_n.append(h/np.sqrt(np.sum(h**2)))
-
-
             beta.append(beta[i] + h_n[i][:,0]*dp)
             
             
         fig, ax = plt.subplots(figsize = (10,10))
         ax.contour(self.aa, self.bb, self.squared_resid_2d,vmin = 0,levels = 200)
-        ax.plot(beta[0][0],beta[0][1],'ro')
-
-        ax.plot([beta[i][0] for i in range(1,len(beta))],[beta[i][1]for i in range(1,len(beta))],'ko-')
-
+        p1 = ax.plot([beta[i][0] for i in range(len(beta))],[beta[i][1]for i in range(len(beta))],'ko-')
+        p2 = ax.plot(beta[0][0],beta[0][1],'r*',markersize = 15)
+        ax.legend([p2[0],p1[0]],['Starting point','Optimization Path'],bbox_to_anchor=(0.5, 1.05), loc='lower center',fontsize = 15)
         ax.set_xlabel('beta[0]')
         ax.set_ylabel('beta[1]')
         
@@ -147,17 +141,15 @@ class OptimizationAlgorithms:
                 
             Jac = self.J(beta[i])
             J2=np.dot(np.linalg.inv(np.dot(Jac.T,Jac)),Jac.T) #Calculate J2=(J^T.J)^-1.J^T
-            
             h.append(np.dot(J2,(self.y_true - y_beta)[:,np.newaxis]))
-            
             beta.append(beta[i] + h[i].reshape(2,))
             
         fig, ax = plt.subplots(figsize = (10,10))
         ax.contour(self.aa, self.bb, self.squared_resid_2d,vmin = 0,levels = 200)
-        ax.plot(beta[0][0],beta[0][1],'ro')
+        p1 = ax.plot([beta[i][0] for i in range(len(beta))],[beta[i][1]for i in range(len(beta))],'ko-')
+        p2 = ax.plot(beta[0][0],beta[0][1],'r*',markersize = 15)
+        ax.legend([p2[0],p1[0]],['Starting point','Optimization Path'],bbox_to_anchor=(0.5, 1.05), loc='lower center',fontsize = 15)
 
-        ax.plot([beta[i][0] for i in range(1,len(beta))],[beta[i][1]for i in range(1,len(beta))],'ko-')
-            
         ax.set_xlabel('beta[0]')
         ax.set_ylabel('beta[1]')
         
@@ -204,12 +196,9 @@ class OptimizationAlgorithms:
             Jac = self.J(beta[i])
             
             lambscale = lamb[i]*np.eye(parshape)*np.diag(np.dot(Jac.T,Jac))
-            J2=np.dot(np.linalg.inv(np.dot(Jac.T,Jac) + lambscale),Jac.T) #Calculate J2=(J^T.J+lamb.I)^-1.J^T
-                
+            J2=np.dot(np.linalg.inv(np.dot(Jac.T,Jac) + lambscale),Jac.T) #Calculate J2=(J^T.J+lamb.I)^-1.J^T  
             h = np.dot(J2,(self.y_true - y_beta)[:,np.newaxis])
-
             beta_new = beta[i] + h.reshape(2,)
-            
             chi_new = np.sum((self.y_true - self.f(self.x,beta_new))**2)
 
             if chi_new > chi2[i]:
@@ -223,11 +212,10 @@ class OptimizationAlgorithms:
             
         fig, (ax1,ax2) = plt.subplots(1,2,figsize = (20,10))
         ax1.contour(self.aa, self.bb, self.squared_resid_2d,vmin = 0,levels = 200)
-        ax1.plot(beta[0][0],beta[0][1],'ro')
 
-        ax1.plot([beta[i][0] for i in range(1,len(beta))],[beta[i][1]for i in range(1,len(beta))],'ko-')
-
-
+        p1 = ax1.plot([beta[i][0] for i in range(len(beta))],[beta[i][1]for i in range(len(beta))],'ko-')
+        p2 = ax1.plot(beta[0][0],beta[0][1],'r*',markersize = 15)
+        ax1.legend([p2[0],p1[0]],['Starting point','Optimization Path'],bbox_to_anchor=(0.5, 1.05), loc='lower center',fontsize = 15)
         ax1.set_xlabel('beta[0]')
         ax1.set_ylabel('beta[1]')
 
