@@ -109,7 +109,6 @@ class Function:
                 print('Could not evaluate uncertainty')
                 pass
 
-
         if print_ci == True and self.fit_results[idx].ci_out is not None:
             print('='*50)
             lmfit.printfuncs.report_ci(self.fit_results[idx].ci_out)
