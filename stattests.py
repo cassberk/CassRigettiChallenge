@@ -208,7 +208,22 @@ def verify_cov_err(FObject,par,true_val,low_bnd = 0.65,hi_bnd = 0.71):
         item.set_fontsize(15)
 
 def verify_ci_out(FObject,par,sigma,true_par_val):
+    """
+    Verify the confidence intervals estimated using the F-test
 
+    Parameters
+    ----------
+    FObject: Function Object
+    
+    par: str
+        Parameter name
+
+    sigma: int (1,2 or 3)
+        n-sigma value to estimate confidence interval from
+
+    true_par_val: float
+        True parameter value 
+    """  
     if sigma == 1:
         idx_l = 2
         ids_u = 4
